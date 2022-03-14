@@ -195,4 +195,10 @@ Deleted Accounts: <code>{deleted}</code>"""
 async def get_users(client: Bot, message: Message):
     msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
     users = await full_userbase()
-    await msg.edit(f"{len(status)})
+    await msg.edit(f"""<b> OVERALL BOT STATISTICS! </b>)
+
+Total Users     : <code>{total}</code>
+
+Blocked Users   : <code>{blocked}</code>
+
+Deleted Accounts: <code>{deleted}</code>"""
