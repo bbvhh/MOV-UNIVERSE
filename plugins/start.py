@@ -142,6 +142,12 @@ async def not_joined(client: Client, message: Message):
         disable_web_page_preview = True
     )
 
+@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
+async def get_users(client: Bot, message: Message):
+    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
+    users = await full_userbase()
+    await msg.edit(f"{len(users)} users are using this bot")
+
 @Bot.on_message(filters.private & filters.command('boardcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
     if message.reply_to_message:
@@ -190,15 +196,3 @@ Deleted Accounts: <code>{deleted}</code>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
-
-@Bot.on_message(filters.command('stats') & filters.private & filters.user(ADMINS))
-async def get_users(client: Bot, message: Message):
-    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
-    users = await full_userbase()
-    await msg.edit(f"""<b> OVERALL BOT STATISTICS! </b>)
-
-Total Users     : <code>{total}</code>
-
-Blocked Users   : <code>{blocked}</code>
-
-Deleted Accounts: <code>{deleted}</code>"""
