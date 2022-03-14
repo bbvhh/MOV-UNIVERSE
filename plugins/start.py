@@ -140,13 +140,7 @@ async def not_joined(client: Client, message: Message):
         reply_markup = InlineKeyboardMarkup(buttons),
         quote = True,
         disable_web_page_preview = True
-    )
-
-@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
-async def get_users(client: Bot, message: Message):
-    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
-    users = await full_userbase()
-    await msg.edit(f"{len(users)} users are using this bot")
+   
 
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
@@ -196,44 +190,14 @@ Deleted Accounts: <code>{deleted}</code>"""
         await asyncio.sleep(8)
         await msg.delete()
 
-@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
+@Bot.on_message(filters.command('stats') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
-    if message.reply_to_message:
-        query = await query_msg()
-        broadcast_msg = message.reply_to_message
-        total = 0
-        blocked = 0
-        deleted = 0
-        
-        pls_wait = await message.reply("<b>Broadcasting...</b>")
-        for row in query:
-            chat_id = int(row[0])
-            try:
-                await broadcast_msg.copy(chat_id)
-                successful += 1
-            except FloodWait as e:
-                await asyncio.sleep(e.x)
-                await broadcast_msg.copy(chat_id)
-                successful += 1
-            except UserIsBlocked:
-                blocked += 1
-            except InputUserDeactivated:
-                deleted += 1
-            except:
-                unsuccessful += 1
-                pass
-            total += 1
-        stat = f"""<b>BOT STATISTICS! 🧰</b>
+    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
+    users = await full_userbase()
+    await msg.edit(f"""<b>BROARDCAST PASSED!</b>
 
 Total Users     : <code>{total}</code>
 
 Blocked Users   : <code>{blocked}</code>
 
-Deleted Accounts: <code>{deleted}</code>"""
-        
-        return await pls_wait.edit(status)
-
-    else:
-        msg = await message.reply(REPLY_ERROR)
-        await asyncio.sleep(8)
-        await msg.delete()
+Deleted Accounts: <code>{deleted}</code>""")
