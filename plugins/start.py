@@ -178,15 +178,15 @@ async def send_text(client: Bot, message: Message):
                 pass
             total += 1
         
-        status = f"""<b>BROARDCAST PASSED!</b>
+        status = f"""<b>✅️ BROARDCAST PASSED!</b>
 
-Total Users: <code>{total}</code>
+Total Users     : <code>{total}</code>
 
-Sent: <code>{successful}</code>
+Sent            : <code>{successful}</code>
 
-Unsent: <code>{unsuccessful}</code>
+Unsent          : <code>{unsuccessful}</code>
 
-Blocked Users: <code>{blocked}</code>
+Blocked Users   : <code>{blocked}</code>
 
 Deleted Accounts: <code>{deleted}</code>"""
         
