@@ -89,8 +89,8 @@ async def start_command(client: Client, message: Message):
         reply_markup = InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("📑 About Me", callback_data = "about"),
-                    InlineKeyboardButton("🔒 Close", callback_data = "close")
+                    InlineKeyboardButton("☺️ About Me 😇", callback_data = "about"),
+                    InlineKeyboardButton("❌️ CLOSE ❌️", callback_data = "close")
                 ]
             ]
         )
@@ -113,7 +113,7 @@ async def not_joined(client: Client, message: Message):
     buttons = [
         [
             InlineKeyboardButton(
-                "🔥 MASTER CHANNEL 🤩",
+                "⚡️ MASTER CHANNEL 🔥",
                 url = client.invitelink)
         ]
     ]
@@ -121,7 +121,7 @@ async def not_joined(client: Client, message: Message):
         buttons.append(
             [
                 InlineKeyboardButton(
-                    text = 'Try Again',
+                    text = 'TRY AGAIN AFTER JOIN',
                     url = f"https://t.me/{client.username}?start={message.command[1]}"
                 )
             ]
@@ -140,7 +140,13 @@ async def not_joined(client: Client, message: Message):
         reply_markup = InlineKeyboardMarkup(buttons),
         quote = True,
         disable_web_page_preview = True
-   
+    )
+
+@Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
+async def get_users(client: Bot, message: Message):
+    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
+    users = await full_userbase()
+    await msg.edit(f"{len(users)} users are using this bot")
 
 @Bot.on_message(filters.private & filters.command('broadcast') & filters.user(ADMINS))
 async def send_text(client: Bot, message: Message):
@@ -153,7 +159,7 @@ async def send_text(client: Bot, message: Message):
         deleted = 0
         unsuccessful = 0
         
-        pls_wait = await message.reply("<b>Broadcasting...</b>")
+        pls_wait = await message.reply("<i>Broadcasting Message.. This will Take Some Time</i>")
         for row in query:
             chat_id = int(row[0])
             try:
@@ -171,6 +177,7 @@ async def send_text(client: Bot, message: Message):
                 unsuccessful += 1
                 pass
             total += 1
+        
         status = f"""<b>BROARDCAST PASSED!</b>
 
 Total Users: <code>{total}</code>
@@ -189,15 +196,3 @@ Deleted Accounts: <code>{deleted}</code>"""
         msg = await message.reply(REPLY_ERROR)
         await asyncio.sleep(8)
         await msg.delete()
-
-@Bot.on_message(filters.command('stats') & filters.private & filters.user(ADMINS))
-async def get_users(client: Bot, message: Message):
-    msg = await client.send_message(chat_id=message.chat.id, text=WAIT_MSG)
-    users = await full_userbase()
-    await msg.edit(f"""<b>BROARDCAST PASSED!</b>
-
-Total Users     : <code>{total}</code>
-
-Blocked Users   : <code>{blocked}</code>
-
-Deleted Accounts: <code>{deleted}</code>""")
