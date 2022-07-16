@@ -26,7 +26,7 @@ FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "0"))
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
 #start message
-START_MSG = os.environ.get("START_MESSAGE", "Hello {first}\n\nI Can Store Private Files In Specified Channel And Other Users Can Access It From Special Link.")
+START_MSG = os.environ.get("START_MESSAGE", "<b>Hii {first}!,</b>\n\n       I'm here to help you... \nYou can use me to download your favourite movies and more... \n\n<b>Powered by,\n @BOT10CREATIONS. </b>")
 try:
     ADMINS=[]
     for x in (os.environ.get("ADMINS", "").split()):
